@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
-use App\Http\Controllers\UserController; // Required for admin user route
-use App\Http\Controllers\AdminController; // <-- Add this if you have a dedicated AdminController
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Task;
@@ -24,30 +24,30 @@ Route::get('/dashboard', function () {
     ]);
 })->middleware(['auth'])->name('dashboard');
 
-// Authenticated routes
+// ✅ Authenticated routes
 Route::middleware('auth')->group(function () {
+    // Profile management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // ✅ Settings page
+    Route::get('/settings', [ProfileController::class, 'settings'])->name('settings');
+    Route::post('/settings', [ProfileController::class, 'updateSettings'])->name('settings.update');
+
     // Task management
     Route::resource('tasks', TaskController::class);
-
-     // Add the single task view route here (if not already included by resource)
     Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
-}); 
+});
 
 // Admin-only routes
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users');
-
-    // Add your admin dashboard route here:
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
-        ->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 });
 
-// Auth scaffolding (e.g., Laravel Breeze, Jetstream, or UI)
+// Auth scaffolding
 require __DIR__.'/auth.php';
 
-// Manual logout route for Laravel UI or custom logic
+// Manual logout route
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');

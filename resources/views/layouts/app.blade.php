@@ -15,11 +15,41 @@
     <div class="content-wrapper">
         <section class="content">
             <div class="container-fluid">
+
+                {{-- ✅ Flash Message Alerts --}}
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show mt-2 flash-message" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show mt-2 flash-message" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+
+                @if (session('status'))
+                    <div class="alert alert-info alert-dismissible fade show mt-2 flash-message" role="alert">
+                        {{ session('status') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+
+                {{-- Page-specific content --}}
                 @yield('content')
+
             </div>
         </section>
     </div>
-
 </div>
 
 <!-- Footer -->
@@ -31,5 +61,17 @@
 <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
+
+<!-- ✅ Flash message auto-hide script -->
+<script>
+    setTimeout(() => {
+        const alerts = document.querySelectorAll('.flash-message');
+        alerts.forEach(alert => {
+            alert.classList.remove('show');
+            alert.classList.add('fade');
+            setTimeout(() => alert.remove(), 500);
+        });
+    }, 3000);
+</script>
 </body>
 </html>

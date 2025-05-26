@@ -103,7 +103,7 @@
 
                 <!-- Settings -->
                 <li class="nav-item">
-                    <a href="{{ route('profile.edit') }}" class="nav-link">
+                    <a href="{{ route('settings') }}" class="nav-link">
                         <i class="nav-icon fas fa-user-cog"></i>
                         <p>Settings</p>
                     </a>
@@ -112,7 +112,7 @@
                 <!-- Admin Panel (only for admins) -->
                 @if(Auth::user()->isAdmin())
                 <li class="nav-item">
-                    <a href="{{ route('admin.users') }}" class="nav-link">
+                   <a class="nav-link" href="{{ route('admin.dashboard') }}">
                         <i class="nav-icon fas fa-users-cog"></i>
                         <p>Admin Panel</p>
                     </a>
