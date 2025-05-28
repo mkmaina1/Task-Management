@@ -75,18 +75,7 @@
             font-size: 0.9rem;
         }
 
-        /* Transition effect */
-        .register-mode .half-image {
-            transform: translateX(-100%);
-        }
 
-        .register-mode .form-section {
-            transform: translateX(-100%);
-        }
-
-        .register-mode .panel {
-            transform: translateX(100%);
-        }
     </style>
 
     <script>

@@ -36,13 +36,16 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+    
+    
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'due_date' => 'nullable|date',
         ]);
 
-        $task = Task::create([
+        try {
+            $task = Task::create([
             'title' => $validated['title'],
             'description' => $validated['description'] ?? null,
             'due_date' => $validated['due_date'] ?? null,
@@ -50,7 +53,15 @@ class TaskController extends Controller
             'is_completed' => false,
         ]);
 
+        
         return redirect()->route('tasks.show', $task)->with('success', 'Task created successfully.');
+
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        
+        }
+
+       
     }
 
     /**
@@ -103,4 +114,17 @@ class TaskController extends Controller
 
         return redirect()->route('tasks.index')->with('success', 'Task deleted successfully.');
     }
+
+        public function markAsComplete(Task $task)
+{
+    if (auth()->id() !== $task->user_id && !auth()->user()->isAdmin()) {
+        return redirect()->back()->with('error', 'Unauthorized.');
+    }
+
+    $task->is_completed = true;
+    $task->save();
+
+    return redirect()->back()->with('success', 'Task marked as completed.');
 }
+}
+

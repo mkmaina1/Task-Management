@@ -38,13 +38,18 @@ Route::middleware('auth')->group(function () {
     // Task management
     Route::resource('tasks', TaskController::class);
     Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
+    Route::post('/tasks/{task}/complete', [TaskController::class, 'markAsComplete'])->name('tasks.complete');
+
 });
 
-// Admin-only routes
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users');
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+// Admin-only routes with URL prefix and proper middleware
+Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+    Route::get('admin/edit', [AdminController::class, 'edit'])->name('admin.edit');
+    Route::get('admin/destroy', [AdminController::class, 'destroy'])->name('admin.destroy');
 });
+
 
 // Auth scaffolding
 require __DIR__.'/auth.php';

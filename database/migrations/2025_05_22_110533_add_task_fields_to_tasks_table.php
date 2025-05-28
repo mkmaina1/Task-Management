@@ -16,6 +16,7 @@ return new class extends Migration
         $table->text('description')->nullable()->after('title');
         $table->boolean('is_completed')->default(false)->after('description');
         $table->foreignId('user_id')->constrained()->onDelete('cascade')->after('is_completed');
+        $table->date('due_date')->nullable();
     });
 }
 

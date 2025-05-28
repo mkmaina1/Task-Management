@@ -19,6 +19,7 @@ class TaskFactory extends Factory
     return [
         'title' => $this->faker->sentence,
         'description' => $this->faker->paragraph,
+        'due_date' => $this->faker->dateTimeBetween('+1days', '+2 months')->format('Y-m-d'),
         'is_completed' => $this->faker->boolean(30), // 30% chance completed
         'user_id' => \App\Models\User::factory(), // default, will override in seeder
     ];

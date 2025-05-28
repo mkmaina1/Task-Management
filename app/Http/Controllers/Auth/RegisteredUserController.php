@@ -45,5 +45,5 @@ public function store(Request $request): RedirectResponse
 
     return redirect()->route('dashboard')->with('success', 'Account created successfully!');
 }
-
 }
+

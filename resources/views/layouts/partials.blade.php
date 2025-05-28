@@ -110,14 +110,35 @@
                 </li>
 
                 <!-- Admin Panel (only for admins) -->
-                @if(Auth::user()->isAdmin())
-                <li class="nav-item">
-                   <a class="nav-link" href="{{ route('admin.dashboard') }}">
-                        <i class="nav-icon fas fa-users-cog"></i>
-                        <p>Admin Panel</p>
-                    </a>
-                </li>
-                @endif
+               @if(Auth::user() && Auth::user()->isAdmin()) 
+    <li class="nav-item has-treeview">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-tools"></i>
+            <p>
+                Admin Panel
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ route('admin.dashboard') }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('admin.users') }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Manage Users</p>
+                </a>
+            </li>
+        </ul>
+    </li>
+    @endif 
+
+
+
+
 
                 <!-- Logout -->
                 <li class="nav-item mt-3">

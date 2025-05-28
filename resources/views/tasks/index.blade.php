@@ -53,8 +53,12 @@
             <tbody>
                 @foreach ($tasks as $task)
                 <tr>
+                    @php
+                        $date = \Carbon\Carbon::parse($task->due_date)->format('M d, Y');
+                    @endphp
+
                     <td>{{ $task->title }}</td>
-                    <td>{{ $task->due_date ? $task->due_date->format('M d, Y') : 'N/A' }}</td>
+                    <td>{{ $task->due_date ? $date : 'No due date' }}</td>
                     <td>
                         @if ($task->is_completed)
                             <span class="badge bg-success">Completed</span>
@@ -62,18 +66,27 @@
                             <span class="badge bg-danger">Pending</span>
                         @endif
                     </td>
-                    <td class="text-center">
-                        @if (auth()->id() === $task->user_id || auth()->user()->isAdmin())
-                            <a href="{{ route('tasks.edit', $task) }}" class="btn btn-sm btn-warning me-1">Edit</a>
-                            <form action="{{ route('tasks.destroy', $task) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this task?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            </form>
-                        @else
-                            <span class="text-muted">No access</span>
-                        @endif
-                    </td>
+                   <td class="text-center">
+    @if (auth()->id() === $task->user_id || auth()->user()->isAdmin())
+        @if (!$task->is_completed)
+            <form action="{{ route('tasks.complete', $task) }}" method="POST" class="d-inline">
+                @csrf
+                <button type="submit" class="btn btn-sm btn-success me-1">Complete</button>
+            </form>
+        @endif
+
+        <a href="{{ route('tasks.edit', $task) }}" class="btn btn-sm btn-warning me-1">Edit</a>
+
+        <form action="{{ route('tasks.destroy', $task) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this task?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+        </form>
+    @else
+        <span class="text-muted">No access</span>
+    @endif
+</td>
+
                 </tr>
                 @endforeach
             </tbody>
@@ -82,7 +95,7 @@
 
     <!-- Pagination -->
     <div class="mt-3">
-        {{ $tasks->withQueryString()->links() }}
+        {{ $tasks->onEachSide(1)->links('pagination::simple-bootstrap-5') }}
     </div>
     @else
         <p class="text-muted">No tasks found.</p>
