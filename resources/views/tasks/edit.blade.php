@@ -3,6 +3,11 @@
 @section('content')
 <div class="container">
     <h2>Edit Task</h2>
+    <a href="{{ route('reports.create', $task->id) }}" class="btn btn-success shadow-sm">
+            <i class="bi bi-plus-circle me-1"></i> Create New Report
+             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </a>
+
     <form action="{{ route('tasks.update', $task->id) }}" method="POST">
         @csrf @method('PUT')
         <div class="form-group">

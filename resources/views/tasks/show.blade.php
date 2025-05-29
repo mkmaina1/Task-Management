@@ -3,66 +3,59 @@
 @section('title', 'View Task')
 
 @section('content')
-<div class="max-w-3xl mx-auto mt-16 px-6">
-    <div class="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl ring-1 ring-gray-200 dark:ring-gray-700 p-8 space-y-8 transition-all">
-
-        {{-- Task Title & ID --}}
-        <div>
-            <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white mb-1">{{ $task->title }}</h1>
-            <p class="text-sm text-gray-500 dark:text-gray-400">Task ID: <span class="font-medium">#{{ $task->id }}</span></p>
-        </div>
-
-        {{-- Description --}}
-        <div>
-            <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2"> Description</h2>
-            <p class="text-base text-gray-700 dark:text-gray-400 whitespace-pre-wrap leading-relaxed">
-                {{ $task->description ?? 'No description provided.' }}
-            </p>
-        </div>
-
-        {{-- Status and Due Date --}}
-        <div class="flex flex-col sm:flex-row justify-between gap-6">
-            <div>
-                <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2"> Status</h2>
-                @if($task->is_completed)
-                    <span class="inline-block px-4 py-1 bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-200 text-sm rounded-full font-medium">
-                         Completed
-                    </span>
-                @else
-                    <span class="inline-block px-4 py-1 bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-200 text-sm rounded-full font-medium">
-                         Pending
-                    </span>
-                @endif
+<div class="container my-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-5">
+            
+            {{-- Task Title & ID --}}
+            <div class="mb-4">
+                <h2 class="card-title h1 fw-bold text-dark">{{ $task->title }}</h2>
+                <small class="text-muted">Task ID: #{{ $task->id }}</small>
             </div>
 
-            <div>
-                <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2"> Due Date</h2>
-                <p class="text-gray-800 dark:text-gray-200">
-                    {{ $task->due_date ? \Carbon\Carbon::parse($task->due_date)->format('F j, Y') : 'No due date' }}
-                </p>
+            {{-- Description --}}
+            <div class="mb-4">
+                <h5 class="fw-semibold text-secondary">Description</h5>
+                <p class="text-dark">{{ $task->description ?? 'No description provided.' }}</p>
             </div>
-        </div>
 
-        {{-- Action Buttons --}}
-        <div class="flex flex-wrap gap-4 pt-6 border-t border-gray-200 dark:border-gray-700">
-            <a href="{{ route('tasks.edit', $task) }}"
-               class="inline-flex items-center px-5 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl shadow transition">
-                 Edit Task
-            </a>
+            {{-- Status and Due Date --}}
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <h6 class="fw-semibold text-secondary">Status</h6>
+                    @if($task->is_completed)
+                        <span class="badge bg-success px-3 py-2 rounded-pill">Completed</span>
+                    @else
+                        <span class="badge bg-danger px-3 py-2 rounded-pill">Pending</span>
+                    @endif
+                </div>
+                <div class="col-md-6">
+                    <h6 class="fw-semibold text-secondary">Due Date</h6>
+                    <p class="text-dark">
+                        {{ $task->due_date ? \Carbon\Carbon::parse($task->due_date)->format('F j, Y') : 'No due date' }}
+                    </p>
+                </div>
+            </div>
 
-            <form action="{{ route('tasks.destroy', $task) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this task?');">
-                @csrf
-                @method('DELETE')
-                <button type="submit"
-                    class="inline-flex items-center px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl shadow transition">
-                     Delete Task
-                </button>
-            </form>
+            {{-- Action Buttons --}}
+            <div class="d-flex flex-wrap gap-3 border-top pt-4">
+                <a href="{{ route('tasks.edit', $task) }}" class="btn btn-warning text-white shadow-sm">
+                    <i class="bi bi-pencil-square me-1"></i> Edit Task
+                </a>
 
-            <a href="{{ route('tasks.index') }}"
-               class="inline-flex items-center px-5 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white rounded-xl shadow transition">
-                ← Back to Tasks
-            </a>
+                <form action="{{ route('tasks.destroy', $task) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this task?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger shadow-sm">
+                        <i class="bi bi-trash me-1"></i> Delete Task
+                    </button>
+                </form>
+
+                <a href="{{ route('tasks.index') }}" class="btn btn-secondary shadow-sm">
+                    <i class="bi bi-arrow-left me-1"></i> Back to Tasks
+                </a>
+            </div>
+
         </div>
     </div>
 </div>

@@ -52,10 +52,24 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
-    }
+   // app/Models/User.php
+
+public function isAdmin()
+{
+    return $this->role === 'admin';
+}
+
+public function isSuperAdmin()
+{
+    return $this->role === 'super_admin';
+}
+
+public function isUser()
+{
+    return $this->role === 'user';
+}
+
+
 
     /**
      * Get the tasks for the user.
@@ -64,4 +78,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Task::class);
     }
+    public function reports()
+{
+    return $this->hasMany(Report::class,'user_id', 'id');
+}
+
 }

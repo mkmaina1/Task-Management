@@ -4,7 +4,7 @@
 <div class="max-w-xl mx-auto mt-10">
     <h2 class="text-2xl font-bold mb-4">Edit User</h2>
 
-    <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
+    <form action="{{ route('admin.update', $user->id) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -20,7 +20,7 @@
 
         <div class="flex gap-4">
             <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Update</button>
-            <a href="{{ route('admin.users.index') }}" class="text-gray-500 underline">Cancel</a>
+            <a href="{{ route('admin.index') }}" class="text-gray-500 underline">Cancel</a>
         </div>
     </form>
 </div>

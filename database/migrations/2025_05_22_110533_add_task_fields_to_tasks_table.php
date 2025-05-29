@@ -28,7 +28,7 @@ return new class extends Migration
 {
     Schema::table('tasks', function (Blueprint $table) {
         $table->dropForeign(['user_id']);
-        $table->dropColumn(['title', 'description', 'is_completed', 'user_id']);
+        $table->dropColumn(['title', 'description', 'is_completed', 'user_id', 'due_date']);
     });
 }
 
