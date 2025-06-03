@@ -17,6 +17,7 @@ return new class extends Migration
         $table->foreignId('task_id')->nullable()->constrained()->onDelete('set null');
         $table->text('content');
         $table->text('admin_reply')->nullable();
+        $table->string('status')->default('pending');
         $table->timestamps();
     });
 }

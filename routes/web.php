@@ -73,14 +73,19 @@ Route::prefix('superadmin')->middleware(['auth', 'is_super_admin'])->group(funct
 
     // User sends report about a task
 Route::middleware('auth')->group(function () {
-    Route::resource('reports', ReportController::class)->only(['index', 'create', 'store']);
+    Route::resource('/reports', ReportController::class)->only(['index', 'create', 'store']);
      Route::get('/reports/{task}', [ReportController::class, 'create'])->name('reports.create');
 
 
-    Route::middleware('is_admin')->group(function () {
-        Route::post('/admin/reports/{report}/reply', [ReportController::class, 'reply'])->name('reports.reply');
+    Route::middleware('is_super_admin')->group(function () {
+        Route::post('/super_admin/reports/{report}/reply', [ReportController::class, 'reply'])->name('super_admin.reports.reply');
     });
+    Route::middleware('is_admin')->group(function () {
+        Route::post('/admin/reports/{report}/reply', [ReportController::class, 'reply'])->name('admin.reports.reply');
+    });
+    
 });
+
 
 
 // Auth scaffolding

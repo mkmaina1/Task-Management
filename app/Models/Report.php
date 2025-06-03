@@ -13,7 +13,9 @@ class Report extends Model
     protected $fillable = [
         'user_id',
         'task_id',
-        'message',
+        'content',
+        'admin_reply',
+        'status',
     ];  
 
     public function user()

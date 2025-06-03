@@ -12,13 +12,15 @@ class ReportController extends Controller
     
 public function index()
 {
-    $reports = Auth::user()->isAdmin()
-        ? Report::with('user', 'task')->latest()->get()
-        : Auth::user()->reports()->with('task')->latest()->get();
-       
+    $user = Auth::user();
+
+    $reports = ($user->isAdmin() || $user->isSuperAdmin())
+        ? Report::with('user', 'task')->latest()->paginate(2)
+        : $user->reports()->with('task')->latest()->paginate(2);
 
     return view('reports.index', compact('reports'));
 }
+
 
 public function create()
 {
@@ -46,15 +48,21 @@ public function store(Request $request)
 
 public function reply(Request $request, Report $report)
 {
+    // Allow only admins and super admins to reply
+    if (!Auth::user()->isAdmin() && !Auth::user()->isSuperAdmin()) {
+        abort(403, 'Unauthorized action.');
+    }
+
     $request->validate([
         'admin_reply' => 'required|string|min:2'
     ]);
 
     $report->update(['admin_reply' => $request->admin_reply]);
 
-    // Optional: notify user
+    // Optional: Send notification to user
 
     return redirect()->back()->with('success', 'Reply sent.');
 }
+
 }
 

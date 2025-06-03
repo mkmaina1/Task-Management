@@ -11,12 +11,12 @@
                     <h4 class="mb-0"><i class="bi bi-flag-fill me-2"></i>Report a Task</h4>
                 </div>
                 <div class="card-body bg-light">
-                    <form method="POST" action="{{ route('reports.store') }}">
-                        @csrf
+                    <form action="{{ route('reports.store') }}" method="POST">
+                          @csrf
 
                         <div class="mb-4">
-                            <label for="message" class="form-label fw-semibold">Your Message</label>
-                            <textarea id="message" name="message" rows="5" required class="form-control rounded-3 shadow-sm"></textarea>
+                            <label for="content" class="form-label fw-semibold">Your Message</label>
+                            <textarea id="content" name="content" rows="5" required class="form-control rounded-3 shadow-sm"></textarea>
                         </div>
 
                         <div class="d-flex justify-content-end">
