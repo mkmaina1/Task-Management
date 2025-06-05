@@ -157,7 +157,7 @@
             <li class="nav-item">
                 <a href="{{ route('super_admin.dashboard') }}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Dash</p>
+                    <p>Dashboard</p>
                 </a>
             </li>
             <li class="nav-item">
