@@ -48,7 +48,7 @@
                                 <td>{{ $user->tasks_count }}</td>
                                 <td>{{ $user->created_at->format('Y-m-d') }}</td>
                                 <td>
-                                    <a href="{{ route('admin.edit', $user->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                    <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-warning">Edit</a>
                                     <form action="{{ route('admin.destroy', $user->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?')">
                                         @csrf
                                         @method('DELETE')

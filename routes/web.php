@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SuperAdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Task;
@@ -49,16 +50,15 @@ Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
     Route::get('admin/edit', [AdminController::class, 'edit'])->name('admin.users.edit');
-    Route::get('admin/update', [AdminController::class, 'update'])->name('admin.update');
+    Route::put('admin/update', [AdminController::class, 'update'])->name('admin.update');
     Route::get('admin/destroy', [AdminController::class, 'destroy'])->name('admin.destroy');
 });
 
 
      // Add more Super Admin routes here
 Route::prefix('superadmin')->middleware(['auth', 'is_super_admin'])->group(function () {
-    Route::get('/dashboard', [SuperAdminController::class, 'dashboard'])->name('super_admin.dashboard');
-    Route::get('/manage', [SuperAdminController::class, 'manage'])->name('super_admin.manage');
-
+    Route::get('/superadmin/dashboard', [SuperAdminController::class, 'dashboard'])->name('super_admin.dashboard');
+    Route::get('/manageusers', [SuperAdminController::class, 'manageUsers'])->name('super_admin.manageusers');
     Route::get('/dashboard', [SuperAdminController::class, 'dashboard'])->name('super_admin.dashboard');
     Route::get('/users', [SuperAdminController::class, 'manageUsers'])->name('super_admin.users');
     Route::post('/users/{user}/promote', [SuperAdminController::class, 'promoteToAdmin'])->name('super_admin.promote');

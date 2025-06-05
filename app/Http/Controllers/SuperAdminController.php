@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use App\Models\User;
 use App\Models\Report;
 use Illuminate\Http\Request;
@@ -12,22 +13,29 @@ class SuperAdminController extends Controller
     // Dashboard overview
     public function dashboard()
     {
-       
-            $userCount => User::count();
-            $adminCount => User::where('role', 'admin')->count();
-            $reportCount => Report::count();
-             return view('super_admin.dashboard',compact ( 
-                'usercount', 'admincount', 'reportcount'
-             ));
-        
+        $totalUsers = User::where('role', 'user')->count();
+        $totalAdmins = User::where('role', 'admin')->count();
+        $totalReports = Report::count();
+        $totalTasks = Task::count();
+
+        $recentUsers = User::latest()->take(5)->get(); // 🔥 Last 5 users/admins
+
+        return view('super_admin.dashboard', compact(
+            'totalUsers',
+            'totalAdmins',
+            'totalReports',
+            'totalTasks',
+            'recentUsers'
+        ));
     }
 
     // Manage users
-    public function manageUsers()
-    {
-        $users = User::where('role', '!=', 'super_admin')->get();
-        return view('super_admin.users', compact('users'));
-    }
+   public function manageUsers()
+{
+    $users = User::where('role', '!=', 'super_admin')->latest()->paginate(10);
+    return view('super_admin.users.index', compact('users'));
+}
+
 
     // Promote user to admin
     public function promoteToAdmin(User $user)
@@ -40,18 +48,19 @@ class SuperAdminController extends Controller
         return back()->with('info', $user->name . ' is already an admin.');
     }
 
-        public function demoteToUser(User $user)
+    // Demote admin to user
+    public function demoteToUser(User $user)
     {
-            $user->update(['role' => 'user']);
-         return back()->with('success', 'Admin demoted to User.');
+        $user->update(['role' => 'user']);
+        return back()->with('success', 'Admin demoted to User.');
     }
 
-        public function deleteUser(User $user)
+    // Delete user
+    public function deleteUser(User $user)
     {
-         $user->delete();
+        $user->delete();
         return back()->with('success', 'User deleted.');
     }
-
 
     // View all reports
     public function viewReports()
@@ -70,7 +79,7 @@ class SuperAdminController extends Controller
         $report->reply = $request->reply;
         $report->save();
 
-        // Notify user via email (optional)
+        // Optional email notification
         Mail::raw("Reply to your report: " . $request->reply, function ($message) use ($report) {
             $message->to($report->user->email)
                     ->subject('Reply to your task report');

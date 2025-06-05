@@ -1,27 +1,55 @@
 @extends('layouts.app')
 
+@section('title', 'Edit User')
+
 @section('content')
-<div class="max-w-xl mx-auto mt-10">
-    <h2 class="text-2xl font-bold mb-4">Edit User</h2>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white rounded-top-4">
+                    <h4 class="mb-0"><i class="bi bi-person-lines-fill me-2"></i>Edit User Details</h4>
+                </div>
+                <div class="card-body bg-light rounded-bottom-4">
+                    <form action="{{ route('admin.update', $user->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
 
-    <form action="{{ route('admin.update', $user->id) }}" method="POST">
-        @csrf
-        @method('PUT')
+                        {{-- Name --}}
+                        <div class="mb-4">
+                            <label for="name" class="form-label fw-semibold">Name</label>
+                            <input type="text" id="name" name="name" value="{{ $user->name }}" class="form-control rounded-3 shadow-sm" required>
+                        </div>
 
-        <div class="mb-4">
-            <label class="block font-medium">Name</label>
-            <input type="text" name="name" value="{{ $user->name }}" class="w-full border px-3 py-2 rounded" required>
+                        {{-- Email --}}
+                        <div class="mb-4">
+                            <label for="email" class="form-label fw-semibold">Email</label>
+                            <input type="email" id="email" name="email" value="{{ $user->email }}" class="form-control rounded-3 shadow-sm" required>
+                        </div>
+
+                        {{-- Role --}}
+                        <div class="mb-4">
+                            <label for="role" class="form-label fw-semibold">Role</label>
+                            <select id="role" name="role" class="form-select rounded-3 shadow-sm" required>
+                                <option value="user" {{ $user->role === 'user' ? 'selected' : '' }}>User</option>
+                                <option value="admin" {{ $user->role === 'admin' ? 'selected' : '' }}>Admin</option>
+                                <option value="super_admin" {{ $user->role === 'super_admin' ? 'selected' : '' }}>Super Admin</option>
+                            </select>
+                        </div>
+
+                        {{-- Buttons --}}
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{{ route('admin.users') }}" class="btn btn-outline-secondary rounded-pill px-4">
+                                <i class="bi bi-arrow-left-circle me-1"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-success rounded-pill px-4 shadow">
+                                <i class="bi bi-save-fill me-1"></i>Update User
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-
-        <div class="mb-4">
-            <label class="block font-medium">Email</label>
-            <input type="email" name="email" value="{{ $user->email }}" class="w-full border px-3 py-2 rounded" required>
-        </div>
-
-        <div class="flex gap-4">
-            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Update</button>
-            <a href="{{ route('admin.index') }}" class="text-gray-500 underline">Cancel</a>
-        </div>
-    </form>
+    </div>
 </div>
 @endsection

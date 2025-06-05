@@ -157,11 +157,11 @@
             <li class="nav-item">
                 <a href="{{ route('super_admin.dashboard') }}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Dashboard</p>
+                    <p>Dash</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('super_admin.manage') }}" class="nav-link">
+                <a href="{{ route('super_admin.manageusers') }}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Manage Users & Admins</p>
                 </a>
